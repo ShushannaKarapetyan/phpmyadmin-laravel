@@ -1,23 +1,26 @@
 <template>
     <Sidebar></Sidebar>
-
-<!--    <p>-->
-<!--        <router-link :to="{ name: 'databases' }">Home</router-link>-->
-<!--        |-->
-<!--    </p>-->
-
-    <div class="container">
+    <Navbar></Navbar>
+    <div class="container col-md-9 offset-md-3 mt-5">
         <router-view></router-view>
     </div>
 </template>
 
 <script>
 import Sidebar from "./Sidebar";
+import Navbar from "./Navbar";
 
 export default {
     name: "App",
     components: {
         Sidebar,
+        Navbar,
     }
 }
 </script>
+
+<style>
+body {
+    background: #ffffff;
+}
+</style>
