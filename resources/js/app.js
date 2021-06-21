@@ -5,6 +5,7 @@ import * as VueRouter from 'vue-router';
 import App from "./components/App";
 import Databases from "./components/Databases";
 import CreateDatabase from "./components/CreateDatabase";
+import ShowTable from "./components/ShowTable";
 
 const routes = [
     {
@@ -16,6 +17,13 @@ const routes = [
         path: '/db',
         name: 'create-db',
         component: CreateDatabase
+    },
+    {
+        path: '/connection/:connection/:database/:table',
+        //path: '/:database/:table',
+        //path: '/connection/:connection/:database/:table',
+        name: 'show-table',
+        component: ShowTable
     },
 ];
 

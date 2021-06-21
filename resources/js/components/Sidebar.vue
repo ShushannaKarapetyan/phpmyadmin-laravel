@@ -5,14 +5,18 @@
             <router-link class="btn create-db" :to="{ name: 'create-db' }">+ New</router-link>
         </div>
         <div class="database" v-for="(database, index) in databases" :key="index">
-            <button class="btn btn-sm db float-left" @click="toggleDB(index)">
-                <span v-if="!openDB" class="open-db">+</span>
-                <span v-if="openDB" class="close-db">-</span>
-
-                <span v-html="content"></span>
+            <button class="btn btn-sm db" @click="toggleDB(index)">
+                <span class="open-db" :ref="'element' + index">+</span>
+                {{ database['name'] }}
             </button>
-            <div class="table tables-1 hide">
-                <span data-dbName="" data-tableName="">{{ database['name'] }}</span>
+            <div :class="`tables-` + index" class="table hide">
+                <!--<span v-for="table in database.tables" @click="getTable(database['name'], table)"> {{ table }}</span>  -->
+                <template v-for="table in database.tables">
+                    <router-link
+                        :to="{ name: 'show-table', params: {connection: database['connection'], database: database['name'], table: table}}">
+                        {{ table }}
+                    </router-link>
+                </template>
             </div>
         </div>
     </div>
@@ -26,8 +30,6 @@ export default {
     data() {
         return {
             databases: [],
-            openDB: false,
-            content: '',
         }
     },
 
@@ -40,7 +42,6 @@ export default {
             axios.get('/api')
                 .then((response) => {
                     this.databases = response.data;
-                    console.log(response)
                 })
                 .catch((error) => {
                     console.log(error);
@@ -48,10 +49,21 @@ export default {
         },
 
         toggleDB(index) {
-            this.openDB = !this.openDB;
-            console.log(index)
-        }
-    }
+            //let content = this.$refs['element' + index].innerText;
+
+            if (this.$refs['element' + index].innerText === '+') {
+                this.$refs['element' + index].innerText = '-';
+
+                const el = document.querySelector(".tables-" + index);
+                el.style = "display:block";
+            } else {
+                this.$refs['element' + index].innerText = '+';
+
+                const el = document.querySelector(".tables-" + index);
+                el.style = "display:none";
+            }
+        },
+    },
 }
 </script>
 
@@ -62,5 +74,23 @@ export default {
 
 .btn:focus, .btn.focus {
     box-shadow: none;
+}
+
+.hide {
+    display: none;
+}
+
+.table a {
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 13px;
+    color: #818181;
+    display: block;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    outline: none;
 }
 </style>

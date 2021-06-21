@@ -20,6 +20,7 @@ class DatabasesController extends Controller
     {
         $databases = DB::select('SHOW DATABASES');
         $db_tables = [];
+        $tables = [];
 
         foreach ($databases as $key => $database) {
             Config::set("database.connections.mysql-$key", [
@@ -31,15 +32,15 @@ class DatabasesController extends Controller
             ]);
 
             $db_tables[$key]['name'] = $database->Database;
-            $db_tables[$key]['tables'] = DB::connection("mysql-$key")->select('SHOW TABLES');
+            $db_tables[$key]['connection'] = "mysql-$key";
 
-            foreach ($db_tables[$key]['tables'] as $table) {
+            $tables = DB::connection("mysql-$key")->select('SHOW TABLES');
+
+            foreach ($tables as $table) {
                 $tableName = "Tables_in_" . $database->Database;
                 $db_tables[$key]['tables'][] = $table->$tableName;
             }
         }
-
-        //dd($dbTables);
 
         return response()->json($db_tables);
     }

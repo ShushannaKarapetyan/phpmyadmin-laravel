@@ -24,7 +24,6 @@ export default {
             })
                 .then((response) => {
                     alert(response.data);
-                    console.log(response)
                 })
                 .catch((error) => {
                     console.log(error);
