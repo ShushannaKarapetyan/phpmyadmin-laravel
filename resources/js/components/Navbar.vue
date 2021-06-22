@@ -7,7 +7,10 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item font-weight-bold">
-                    <button class="btn nav-link create-item">Insert</button>
+<!--                    <router-link class="btn nav-link"-->
+<!--                                 :to="{ name: 'create-item' , params: {connection:connection, database: database, table:table}}">-->
+<!--                        Insert-->
+<!--                    </router-link>-->
                 </li>
             </ul>
         </div>
@@ -17,6 +20,21 @@
 
 <script>
 export default {
-    name: "Navbar"
+    name: "Navbar",
+
+    data() {
+        return {
+            connection: '',
+            database: '',
+            table: '',
+        }
+    },
+
+    mounted() {
+        console.log(this.$route.name)
+        this.connection = this.$route.params.connection;
+        this.database = this.$route.params.database;
+        this.table = this.$route.params.table;
+    }
 }
 </script>

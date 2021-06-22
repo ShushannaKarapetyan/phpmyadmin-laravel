@@ -1,3 +1,5 @@
+import CreateItem from "./components/CreateItem";
+
 require('./bootstrap');
 
 import * as Vue from 'vue';
@@ -6,6 +8,7 @@ import App from "./components/App";
 import Databases from "./components/Databases";
 import CreateDatabase from "./components/CreateDatabase";
 import ShowTable from "./components/ShowTable";
+import EditItem from "./components/EditItem";
 
 const routes = [
     {
@@ -20,10 +23,18 @@ const routes = [
     },
     {
         path: '/connection/:connection/:database/:table',
-        //path: '/:database/:table',
-        //path: '/connection/:connection/:database/:table',
         name: 'show-table',
         component: ShowTable
+    },
+    {
+        path: '/connection/:connection/:database/:table/:id/edit',
+        name: 'edit-item',
+        component: EditItem,
+    },
+    {
+        path: '/connection/:connection/:database/:table/',
+        name: 'create-item',
+        component: CreateItem,
     },
 ];
 

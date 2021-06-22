@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\DB;
 class DatabasesController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
      * @return JsonResponse
      */
     public function index(): JsonResponse
@@ -41,6 +39,7 @@ class DatabasesController extends Controller
                 $db_tables[$key]['tables'][] = $table->$tableName;
             }
         }
+        //return Config::get('database');
 
         return response()->json($db_tables);
     }

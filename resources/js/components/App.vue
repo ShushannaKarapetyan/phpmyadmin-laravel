@@ -1,7 +1,7 @@
 <template>
     <Sidebar></Sidebar>
     <Navbar></Navbar>
-    <div class="container col-md-9 offset-md-3 mt-5">
+    <div class="container col-md-10 offset-md-2 mt-3">
         <router-view></router-view>
     </div>
 </template>
@@ -15,7 +15,7 @@ export default {
     components: {
         Sidebar,
         Navbar,
-    }
+    },
 }
 </script>
 

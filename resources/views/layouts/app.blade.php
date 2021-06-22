@@ -21,6 +21,7 @@
 
     <script>
         window.user_access_token = {!! json_encode(session('user_access_token')) !!};
+        window.base_url = {!! json_encode(config('app.url')) !!}
     </script>
 </head>
 <body>

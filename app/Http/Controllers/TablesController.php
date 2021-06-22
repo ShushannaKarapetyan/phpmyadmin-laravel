@@ -4,21 +4,32 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class TablesController extends Controller
 {
-
-    public function show(Request $request)
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function show(Request $request): JsonResponse
     {
-        $database = $request->database;
-        $table = $request->table;
-        //$connection = $request->connection;
+        Config::set("database.connections.$request->connection", [
+            "driver" => "mysql",
+            "host" => "localhost",
+            "database" => $request->database,
+            "username" => "root",
+            "password" => "password",
+        ]);
 
-        return $table;
-        // $tables = DB::connection($database)->select('SHOW TABLES');
+        $result = DB::connection("$request->connection")->table("$request->table")->get();
 
-        //return $tables;
+        if (!count($result)) {
+            $result['columns'] = Schema::Connection("$request->connection")->getColumnListing("$request->table");
+        }
 
+        return response()->json($result);
     }
 }

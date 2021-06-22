@@ -1,16 +1,15 @@
 <template>
-    <div class="sidenav w-100 col-md-3 float-left">
-        <img src="storage/images/phpmyadmin.png" alt="">
-        <div class="">
-            <router-link class="btn create-db" :to="{ name: 'create-db' }">+ New</router-link>
-        </div>
+    <div class="sidenav w-100 col-md-2 float-left min-vh-100">
+        <img :src="url + '/storage/images/phpmyadmin.png'">
+
+        <router-link class="btn create-db" :to="{ name: 'create-db' }">+ New</router-link>
+
         <div class="database" v-for="(database, index) in databases" :key="index">
             <button class="btn btn-sm db" @click="toggleDB(index)">
                 <span class="open-db" :ref="'element' + index">+</span>
                 {{ database['name'] }}
             </button>
             <div :class="`tables-` + index" class="table hide">
-                <!--<span v-for="table in database.tables" @click="getTable(database['name'], table)"> {{ table }}</span>  -->
                 <template v-for="table in database.tables">
                     <router-link
                         :to="{ name: 'show-table', params: {connection: database['connection'], database: database['name'], table: table}}">
@@ -23,13 +22,12 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
     name: "Sidebar",
     data() {
         return {
             databases: [],
+            url: base_url,
         }
     },
 
