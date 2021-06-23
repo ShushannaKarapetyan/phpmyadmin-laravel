@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\Connection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
@@ -16,13 +16,7 @@ class TablesController extends Controller
      */
     public function show(Request $request): JsonResponse
     {
-        Config::set("database.connections.$request->connection", [
-            "driver" => "mysql",
-            "host" => "localhost",
-            "database" => $request->database,
-            "username" => "root",
-            "password" => "password",
-        ]);
+        Connection::connect($request->connection, 'localhost', 'root', 'password', $request->database);
 
         $result = DB::connection("$request->connection")->table("$request->table")->get();
 

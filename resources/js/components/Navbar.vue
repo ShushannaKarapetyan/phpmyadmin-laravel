@@ -7,10 +7,17 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item font-weight-bold">
-<!--                    <router-link class="btn nav-link"-->
-<!--                                 :to="{ name: 'create-item' , params: {connection:connection, database: database, table:table}}">-->
-<!--                        Insert-->
-<!--                    </router-link>-->
+                    <a class="btn nav-link">
+                        Options
+                    </a>
+                </li>
+                <li class="nav-item font-weight-bold">
+                    <router-link
+                        v-if="$route.name === 'edit-item' || $route.name === 'create-item' || $route.name === 'show-table'"
+                        class="btn nav-link"
+                        :to="{ name: 'create-item' , params: {connection:$route.params.connection, database: $route.params.database, table:$route.params.table}}">
+                        Insert
+                    </router-link>
                 </li>
             </ul>
         </div>
@@ -24,17 +31,24 @@ export default {
 
     data() {
         return {
-            connection: '',
-            database: '',
-            table: '',
+            // connection: '',
+            // database: '',
+            // table: '',
         }
     },
-
+    created() {
+        //this.$nextTick(() => console.log(this.$route));
+    },
     mounted() {
-        console.log(this.$route.name)
-        this.connection = this.$route.params.connection;
-        this.database = this.$route.params.database;
-        this.table = this.$route.params.table;
-    }
+        // this.connection = this.$route.params.connection;
+        // this.database = this.$route.params.database;
+        // this.table = this.$route.params.table;
+    },
+
+    methods: {
+        checkRoute() {
+            return this.$route.name === 'edit-item' || this.$route.name === 'create-item' || this.$route.name === 'show-table';
+        }
+    },
 }
 </script>

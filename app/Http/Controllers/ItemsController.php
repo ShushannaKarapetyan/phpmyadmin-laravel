@@ -3,22 +3,37 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateItemRequest;
+use App\Services\Connection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class ItemsController extends Controller
 {
-    public function create()
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function create(Request $request): JsonResponse
     {
+        Connection::connect($request->connection, 'localhost', 'root', 'password', $request->database);
 
+        $columns = Schema::Connection("$request->connection")->getColumnListing("$request->table");
+
+        return response()->json($columns);
     }
 
+    /**
+     * @param CreateItemRequest $request
+     */
     public function store(CreateItemRequest $request)
     {
+        Connection::connect($request->connection, 'localhost', 'root', 'password', $request->database);
 
+        DB::connection("$request->connection")
+            ->table("$request->table")
+            ->insert($request->data);
     }
 
     /**
@@ -30,29 +45,19 @@ class ItemsController extends Controller
      */
     public function edit($connection, $db, $table, $id): JsonResponse
     {
-        Config::set("database.connections.$connection", [
-            "driver" => "mysql",
-            "host" => "localhost",
-            "database" => $db,
-            "username" => "root",
-            "password" => "password",
-        ]);
+        Connection::connect($connection, 'localhost', 'root', 'password', $db);
 
         $item = DB::connection("$connection")->table("$table")->where('id', $id)->first();
 
         return response()->json($item);
     }
 
+    /**
+     * @param Request $request
+     */
     public function update(Request $request)
     {
-        Config::set("database.connections.$request->connection", [
-            "driver" => "mysql",
-            "host" => "localhost",
-            "database" => $request->database,
-            "username" => "root",
-            "password" => "password",
-        ]);
-
+        Connection::connect($request->connection, 'localhost', 'root', 'password', $request->database);
 
         DB::connection("$request->connection")
             ->table("$request->table")
@@ -69,13 +74,7 @@ class ItemsController extends Controller
      */
     public function destroy($connection, $db, $table, $id): JsonResponse
     {
-        Config::set("database.connections.$connection", [
-            "driver" => "mysql",
-            "host" => "localhost",
-            "database" => $db,
-            "username" => "root",
-            "password" => "password",
-        ]);
+        Connection::connect($connection, 'localhost', 'root', 'password', $db);
 
         DB::connection("$connection")->table("$table")->delete($id);
 

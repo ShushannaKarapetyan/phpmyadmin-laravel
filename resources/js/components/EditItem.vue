@@ -15,7 +15,6 @@
         </tr>
         </tbody>
     </table>
-
     <button type='button' class='btn btn-secondary rounded-pill float-right update-item' @click="updateItem">Go</button>
 </template>
 
@@ -43,7 +42,6 @@ export default {
             axios.get(`/api/connection/${connection}/${database}/${table}/${id}/edit`)
                 .then(response => {
                     this.item = response.data;
-                    console.log(response.data)
                 })
                 .catch(error => {
                     console.log(error);

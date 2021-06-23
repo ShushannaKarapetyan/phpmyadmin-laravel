@@ -1,5 +1,3 @@
-import CreateItem from "./components/CreateItem";
-
 require('./bootstrap');
 
 import * as Vue from 'vue';
@@ -9,6 +7,7 @@ import Databases from "./components/Databases";
 import CreateDatabase from "./components/CreateDatabase";
 import ShowTable from "./components/ShowTable";
 import EditItem from "./components/EditItem";
+import CreateItem from "./components/CreateItem";
 
 const routes = [
     {
@@ -32,7 +31,7 @@ const routes = [
         component: EditItem,
     },
     {
-        path: '/connection/:connection/:database/:table/',
+        path: '/connection/:connection/:database/:table/create',
         name: 'create-item',
         component: CreateItem,
     },
